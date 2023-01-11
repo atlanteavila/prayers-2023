@@ -31,11 +31,17 @@ export default function Form({ type }: { type: "login" | "register" }) {
             }
           });
         } else {
+          console.log('submit register::::::', JSON.stringify({
+            email: e.currentTarget.email.value,
+            password: e.currentTarget.password.value,
+            name: e.currentTarget.fullName.value,
+          }));
           fetch("/api/auth/register", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
+
             body: JSON.stringify({
               email: e.currentTarget.email.value,
               password: e.currentTarget.password.value,

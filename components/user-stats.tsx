@@ -1,46 +1,59 @@
 import SignOut from "@/components/sign-out";
+import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid'
 
 interface UserName {
     email: string | null | undefined;
 }
 
+const stats = [
+    { name: 'Total Subscribers', stat: '71,897', previousStat: '70,946', change: '12%', changeType: 'increase' },
+    { name: 'Avg. Open Rate', stat: '58.16%', previousStat: '56.14%', change: '2.02%', changeType: 'increase' },
+    { name: 'Avg. Click Rate', stat: '24.57%', previousStat: '28.62%', change: '4.05%', changeType: 'decrease' },
+]
+
+function classNames(...classes: any) {
+    return classes.filter(Boolean).join(' ')
+}
+
 export default function UserStats({ email }: UserName) {
     return (
-        <div className="bg-gray-50 pt-12 sm:pt-16 content-center">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <div className="mx-auto max-w-4xl text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                        Hello {email}!
-                    </h2>
-                    <SignOut />
-                    <p className="mt-3 text-xl text-gray-500 sm:mt-4">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellendus repellat laudantium.
-                    </p>
-                </div>
-            </div>
-            <div className="mt-10 bg-white pb-12 sm:pb-16">
-                <div className="relative">
-                    <div className="absolute inset-0 h-1/2 bg-gray-50" />
-                    <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-                        <div className="mx-auto max-w-4xl">
-                            <dl className="rounded-lg bg-white shadow-lg sm:grid sm:grid-cols-3">
-                                <div className="flex flex-col border-b border-gray-100 p-6 text-center sm:border-0 sm:border-r">
-                                    <dt className="order-2 mt-2 text-lg font-medium leading-6 text-gray-500">Pepperoni</dt>
-                                    <dd className="order-1 text-5xl font-bold tracking-tight text-indigo-600">100%</dd>
-                                </div>
-                                <div className="flex flex-col border-t border-b border-gray-100 p-6 text-center sm:border-0 sm:border-l sm:border-r">
-                                    <dt className="order-2 mt-2 text-lg font-medium leading-6 text-gray-500">Delivery</dt>
-                                    <dd className="order-1 text-5xl font-bold tracking-tight text-indigo-600">24/7</dd>
-                                </div>
-                                <div className="flex flex-col border-t border-gray-100 p-6 text-center sm:border-0 sm:border-l">
-                                    <dt className="order-2 mt-2 text-lg font-medium leading-6 text-gray-500">Calories</dt>
-                                    <dd className="order-1 text-5xl font-bold tracking-tight text-indigo-600">100k</dd>
-                                </div>
-                            </dl>
-                        </div>
+        <div>
+            <h3 className="text-lg font-medium leading-6 text-gray-900">Last 30 days</h3>
+            <dl className="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-3 md:divide-y-0 md:divide-x">
+                {stats.map((item) => (
+                    <div key={item.name} className="px-4 py-5 sm:p-6">
+                        <dt className="text-base font-normal text-gray-900">{item.name}</dt>
+                        <dd className="mt-1 flex items-baseline justify-between md:block lg:flex">
+                            <div className="flex items-baseline text-2xl font-semibold text-indigo-600">
+                                {item.stat}
+                                <span className="ml-2 text-sm font-medium text-gray-500">from {item.previousStat}</span>
+                            </div>
+
+                            <div
+                                className={classNames(
+                                    item.changeType === 'increase' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800',
+                                    'inline-flex items-baseline px-2.5 py-0.5 rounded-full text-sm font-medium md:mt-2 lg:mt-0'
+                                )}
+                            >
+                                {item.changeType === 'increase' ? (
+                                    <ArrowUpIcon
+                                        className="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-green-500"
+                                        aria-hidden="true"
+                                    />
+                                ) : (
+                                    <ArrowDownIcon
+                                        className="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-red-500"
+                                        aria-hidden="true"
+                                    />
+                                )}
+
+                                <span className="sr-only"> {item.changeType === 'increase' ? 'Increased' : 'Decreased'} by </span>
+                                {item.change}
+                            </div>
+                        </dd>
                     </div>
-                </div>
-            </div>
+                ))}
+            </dl>
         </div>
     )
 }
